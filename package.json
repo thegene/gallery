@@ -1,0 +1,19 @@
+{
+  "name": "gallery",
+  "version": "1.0.0",
+  "description": "A simple image gallery built with express and react",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thegene/gallery"
+  },
+  "author": "Eugene Westbrook",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thegene/gallery/issues"
+  },
+  "homepage": "https://github.com/thegene/gallery"
+}
