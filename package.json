@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/thegene/gallery/issues"
   },
-  "homepage": "https://github.com/thegene/gallery"
+  "homepage": "https://github.com/thegene/gallery",
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "react": "^0.14.8"
+  }
 }
