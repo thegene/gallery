@@ -1,15 +1,8 @@
 var gulp = require('gulp');
-var clean = require('gulp-clean');
 var webpack = require('webpack-stream');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-gulp.task('default', ['copy-static', 'build-js']);
-
-gulp.task('clean-js', function(){
-  gulp.src('dist/build.js')
-    .pipe(clean());
-});
-
-gulp.task('build-js', ['clean-js'], function(){
+gulp.task('build', function(){
   gulp.src('test.js', { cwd: 'app/' })
     .pipe(webpack({
       module: {
@@ -23,18 +16,13 @@ gulp.task('build-js', ['clean-js'], function(){
         }]
       },
       output: {
-        filename: 'build.js'
-      }
+        filename: '[hash].build.js'
+      },
+      plugins: [new HtmlWebpackPlugin({
+        title: 'Gallery',
+        template: 'app/index.html'
+      })]
     }))
     .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('clean-static', function(){
-  gulp.src('dist/index.html')
-    .pipe(clean());
-});
-
-gulp.task('copy-static', ['clean-static'], function(){
-  gulp.src('index.html', { cwd: 'app/' })
-    .pipe(gulp.dest('dist/'));
-});
