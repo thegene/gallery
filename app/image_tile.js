@@ -4,7 +4,7 @@ var ImageTile = React.createClass({
   render: function(){
     return (
       <div className="ImageTile">
-        <img src="foo.com" />
+        <img src={this.props.imageUrl} />
       </div>
     );
   }
