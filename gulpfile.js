@@ -27,6 +27,11 @@ gulp.task('build', function(){
     .pipe(gulp.dest('dist/'));
 });
 
+gulp.task('build:development', ['clean', 'build'], function(){
+  gulp.src('**', { cwd: 'development' })
+    .pipe(gulp.dest('dist'));
+});
+
 gulp.task('clean', function(){
   gulp.src('dist/*')
     .pipe(clean());
