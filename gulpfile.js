@@ -1,9 +1,10 @@
 var gulp = require('gulp');
 var webpack = require('webpack-stream');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var clean = require('gulp-clean');
 
 gulp.task('build', function(){
-  gulp.src('test.js', { cwd: 'app/' })
+  gulp.src('*.js', { cwd: 'app/' })
     .pipe(webpack({
       module: {
         loaders:[{
@@ -16,7 +17,7 @@ gulp.task('build', function(){
         }]
       },
       output: {
-        filename: '[hash].build.js'
+        filename: 'build.[hash].js'
       },
       plugins: [new HtmlWebpackPlugin({
         title: 'Gallery',
@@ -26,3 +27,7 @@ gulp.task('build', function(){
     .pipe(gulp.dest('dist/'));
 });
 
+gulp.task('clean', function(){
+  gulp.src('dist/*')
+    .pipe(clean());
+});
