@@ -4,7 +4,9 @@ var ImageTile = React.createClass({
   render: function(){
     return (
       <div className="ImageTile">
-        <img src={this.props.imageUrl} />
+        <a download="true" target="_blank">
+          <img src={this.props.imageUrl} />
+        </a>
       </div>
     );
   }
