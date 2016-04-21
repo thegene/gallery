@@ -4,7 +4,7 @@
   "description": "A simple image gallery built with express and react",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-register",
+    "test": "gulp test",
     "build": "gulp build"
   },
   "repository": {
@@ -25,6 +25,7 @@
     "babel-register": "^6.7.2",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
+    "gulp-mocha": "^2.2.0",
     "html-webpack-plugin": "^2.15.0",
     "jsdom": "^8.2.0",
     "mocha": "^2.4.5",
