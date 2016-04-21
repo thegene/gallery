@@ -46,6 +46,10 @@ context('Given a rendered image tile with an image url and a download url', func
     it('has a _blank target', function(){
       expect(attributes.target).to.equal('_blank');
     });
+
+    it('has a link with an href', function(){
+      expect(attributes.href).to.equal('apple');
+    });
   });
   
   context('given a second tile with a different image url', function(){
@@ -53,7 +57,7 @@ context('Given a rendered image tile with an image url and a download url', func
 
     before(function(){
       secondTile = TestUtils.renderIntoDocument(
-        <ImageTile imageUrl="bar.com" />
+        <ImageTile imageUrl="bar.com" downloadUrl="pear" />
       ); 
     });
 
@@ -74,6 +78,10 @@ context('Given a rendered image tile with an image url and a download url', func
 
       it('has a _blank target', function(){
         expect(attributes.target).to.equal('_blank');
+      });
+
+      it('has a link with an href', function(){
+        expect(attributes.href).to.equal('pear');
       });
     });
   });
