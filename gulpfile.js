@@ -5,6 +5,8 @@ var clean = require('gulp-clean');
 var mocha = require('gulp-mocha');
 var babel = require('gulp-babel');
 require('babel-core/register');
+var selenium = require('selenium-standalone');
+var webdriver = require('gulp-webdriver');
 
 gulp.task('build', function(){
   gulp.src('*.js', { cwd: 'app/' })
@@ -34,6 +36,35 @@ gulp.task('test', function(){
   gulp.src('*_test.js', {read: false, cwd: 'test/'})
     .pipe(babel())
     .pipe(mocha());
+});
+
+//https://semaphoreci.com/community/tutorials/setting-up-an-end-to-end-testing-workflow-with-gulp-mocha-and-webdriverio
+gulp.task('e2e', ['e2e:run'], function(){
+  seleniumServer.kill();
+});
+
+gulp.task('e2e:run', ['selenium'], function(done){
+  wdioConf = {};
+  gulp.src('wdio.conf.js')
+    .pipe(webdriver())
+    .on('error', function(){
+      seleniumServer.kill();
+      done();
+    });
+});
+
+var seleniumServer;
+gulp.task('selenium', function(done){
+  selenium.install({logger: console.log}, function(){
+    selenium.start(function(error, child){
+      if (error){
+        return done(error)
+      } else {
+        seleniumServer = child;
+        done();
+      }
+    });
+  });
 });
 
 gulp.task('build:development', ['clean', 'build'], function(){
