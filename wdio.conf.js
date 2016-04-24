@@ -33,7 +33,7 @@ exports.config = {
     // from the same test should run tests.
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'firefox'
     }],
     //
     // ===================

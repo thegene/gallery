@@ -8,7 +8,7 @@ require('babel-core/register');
 var selenium = require('selenium-standalone');
 var webdriver = require('gulp-webdriver');
 
-gulp.task('build', function(){
+gulp.task('build', function(done){
   gulp.src('*.js', { cwd: 'app/' })
     .pipe(webpack({
       module: {
@@ -39,7 +39,7 @@ gulp.task('test', function(){
 });
 
 //https://semaphoreci.com/community/tutorials/setting-up-an-end-to-end-testing-workflow-with-gulp-mocha-and-webdriverio
-gulp.task('e2e', ['e2e:run'], function(){
+gulp.task('e2e', ['build:development', 'e2e:run'], function(){
   seleniumServer.kill();
 });
 
@@ -67,7 +67,7 @@ gulp.task('selenium', function(done){
   });
 });
 
-gulp.task('build:development', ['clean', 'build'], function(){
+gulp.task('build:development', ['clean', 'build'], function(done){
   gulp.src('**', { cwd: 'development' })
     .pipe(gulp.dest('dist'));
 });
