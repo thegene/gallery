@@ -1,12 +1,12 @@
 {
   "manifest": [
     {
-      "full": "images/full/A&G Wedding-1031.jpg",
-      "thumb": "images/thumb/A&G Wedding-1031.jpg"
+      "full": "full/A&G Wedding-1031.jpg",
+      "thumb": "thumb/A&G Wedding-1031.jpg"
     },
     {
-      "full": "images/full/A&G Wedding-1053.jpg",
-      "thumb": "images/thumb/A&G Wedding-1053.jpg"
+      "full": "full/A&G Wedding-1053.jpg",
+      "thumb": "thumb/A&G Wedding-1053.jpg"
     }
   ]
 }

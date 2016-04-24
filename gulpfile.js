@@ -10,7 +10,7 @@ var webdriver = require('gulp-webdriver');
 var runSequence = require('run-sequence');
 
 gulp.task('build', function(){
-  return gulp.src('*.js', { cwd: 'app/' })
+  return gulp.src('entry.js', { cwd: 'app/' })
     .pipe(webpack({
       module: {
         loaders:[{
@@ -20,6 +20,10 @@ gulp.task('build', function(){
           query: {
             presets: ['react', 'es2015']
           }
+        }, {
+          test: /\.json$/,
+          exclude: /node_modules/,
+          loader: 'json'
         }]
       },
       output: {
@@ -33,6 +37,10 @@ gulp.task('build', function(){
     .pipe(gulp.dest('dist/'));
 });
 
+gulp.task('watch', function(){
+  gulp.watch('app/*', ['development:build']);
+});
+
 gulp.task('test', function(){
   gulp.src('*_test.js', {read: false, cwd: 'test/'})
     .pipe(babel())
@@ -41,7 +49,7 @@ gulp.task('test', function(){
 
 //https://semaphoreci.com/community/tutorials/setting-up-an-end-to-end-testing-workflow-with-gulp-mocha-and-webdriverio
 gulp.task('e2e', function(done){
-  runSequence('build:development', 'e2e:run', 'e2e:cleanup');
+  runSequence('development:build', 'e2e:run', 'e2e:cleanup');
 });
 
 gulp.task('e2e:cleanup', function(done){
@@ -71,12 +79,21 @@ gulp.task('selenium', function(done){
   });
 });
 
-gulp.task('build:development', ['clean', 'build'], function(done){
-  return gulp.src('**', { cwd: 'development' })
+gulp.task('development:build', function(done){
+  runSequence('clean', ['development:copyImages', 'development:copyManifest'], 'build',  done);
+});
+
+gulp.task('development:copyImages', function(){
+  return gulp.src('images/**/*', { cwd: 'development' })
     .pipe(gulp.dest('dist'));
 });
 
+gulp.task('development:copyManifest', function(){
+  return gulp.src('manifest.json', { cwd: 'development' })
+    .pipe(gulp.dest('config'));
+});
+
 gulp.task('clean', function(){
-  gulp.src('dist/*')
+  return gulp.src('dist/*')
     .pipe(clean());
 });

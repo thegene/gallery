@@ -9,4 +9,8 @@ context('When visiting the gallery page', function(){
   it('has a title', function(){
     expect(browser.getTitle()).to.equal('Gallery');
   });
+
+  it('has two images', function(){
+    expect(browser.elements('img').value.length).to.equal(2);
+  });
 });
