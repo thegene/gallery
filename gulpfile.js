@@ -41,7 +41,9 @@ gulp.task('watch', function(){
   gulp.watch('app/*', ['development:build']);
 });
 
-gulp.task('test', function(){
+gulp.task('test', ['unit', 'e2e']);
+
+gulp.task('unit', function(){
   gulp.src('*_test.js', {read: false, cwd: 'test/'})
     .pipe(babel())
     .pipe(mocha());
