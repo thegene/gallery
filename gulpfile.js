@@ -9,7 +9,9 @@ var selenium = require('selenium-standalone');
 var webdriver = require('gulp-webdriver');
 var runSequence = require('run-sequence');
 
-gulp.task('build', function(){
+var buildDir;
+
+gulp.task('build', ['environment'], function(){
   return gulp.src('entry.js', { cwd: 'app/' })
     .pipe(webpack({
       module: {
@@ -35,7 +37,7 @@ gulp.task('build', function(){
         template: 'app/index.html'
       })]
     }))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest(buildDir));
 });
 
 gulp.task('watch', function(){
@@ -48,6 +50,10 @@ gulp.task('unit', function(){
   gulp.src('*_test.js', {read: false, cwd: 'test/'})
     .pipe(babel())
     .pipe(mocha());
+});
+
+gulp.task('environment', function(){
+  buildDir = process.env.BUILD_DIR || 'dist';
 });
 
 //https://semaphoreci.com/community/tutorials/setting-up-an-end-to-end-testing-workflow-with-gulp-mocha-and-webdriverio
@@ -86,9 +92,9 @@ gulp.task('development:build', function(done){
   runSequence('clean', ['development:copyImages', 'development:copyManifest'], 'build',  done);
 });
 
-gulp.task('development:copyImages', function(){
+gulp.task('development:copyImages', ['environment'], function(){
   return gulp.src('images/**/*', { cwd: 'development' })
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest(buildDir));
 });
 
 gulp.task('development:copyManifest', function(){
@@ -96,7 +102,7 @@ gulp.task('development:copyManifest', function(){
     .pipe(gulp.dest('config'));
 });
 
-gulp.task('clean', function(){
-  return gulp.src('dist/*')
+gulp.task('clean', ['environment'], function(){
+  return gulp.src(buildDir + '/*')
     .pipe(clean());
 });
