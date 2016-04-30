@@ -25,6 +25,8 @@
     "babel-register": "^6.7.2",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-clean": "^0.3.2",
     "gulp-mocha": "^2.2.0",
     "gulp-webdriver": "^2.0.1",
     "html-webpack-plugin": "^2.15.0",
