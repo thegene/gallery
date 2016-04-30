@@ -20,6 +20,7 @@ gulp.task('build', function(){
           query: {
             presets: ['react', 'es2015']
           }
+
         }, {
           test: /\.json$/,
           exclude: /node_modules/,

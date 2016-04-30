@@ -1,5 +1,6 @@
 import React from 'react';
 import ImageTile from './image_tile';
+import Masonry from 'react-masonry-component';
 
 var Gallery = React.createClass({
   render: function(){
@@ -9,9 +10,9 @@ var Gallery = React.createClass({
       );
     });
     return (
-      <div className="Gallery">
+      <Masonry className="Gallery">
         {images}
-      </div>
+      </Masonry>
     );
   }
 });
