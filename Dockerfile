@@ -1,31 +1,42 @@
 FROM node:4.4.2
 MAINTAINER Eugene Westbrook
 
-# Copy and install the app
-RUN mkdir /app
-COPY app/ /app
-COPY config/ /app
-COPY gulpfile.js /app
-COPY package.json /app
-WORKDIR /app
-RUN npm install
+RUN useradd gallery
+
+# make the src dir and do npm install
+RUN mkdir /src
+COPY package.json /src
+RUN cd /src && npm install
 
 # Zombie processes
-RUN wget -O dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.0.1/dumb-init_1.0.1_amd64
-RUN chmod +x dumb-init
+RUN wget -O /src/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.0.1/dumb-init_1.0.1_amd64
+RUN chmod +x /src/dumb-init
 
-RUN useradd gallery
+# Copy and install the app
+COPY app/ /src/app
+COPY config/ /src/config
+COPY gulpfile.js /src
+RUN chown -R gallery:gallery /src/config
 
 # https://github.com/rauchg/slackin/issues/136
 ENV BABEL_CACHE_PATH=/babel/babel.json
 RUN mkdir /babel
 RUN chown -R gallery:gallery /babel
 
-# Build the app
+# /build volume
 RUN mkdir /build
 RUN chown -R gallery:gallery /build
 VOLUME /build
+
+# /config volume
+RUN mkdir /config
+RUN chown -R gallery:gallery /config
+VOLUME /config
+
 USER gallery
 ENV BUILD_DIR=/build
+ENV FORCE_CLEAN=true
+ENV CONFIG_DIR=/config
 
-CMD ["./dumb-init", "./node_modules/gulp/bin/gulp.js", "build"]
+WORKDIR /src
+CMD ["./dumb-init", "./node_modules/gulp/bin/gulp.js"]
