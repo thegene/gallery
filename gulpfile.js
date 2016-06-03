@@ -8,12 +8,11 @@ require('babel-core/register');
 var selenium = require('selenium-standalone');
 var webdriver = require('gulp-webdriver');
 var runSequence = require('run-sequence');
+var path = require('path');
+var rename = require('gulp-rename');
+var fs = require('fs');
 
-var buildDir,
-    forceClean,
-    configDir;
-
-gulp.task('build', ['environment'], function(){
+gulp.task('build', ['environment', 'copyManifest', 'clean'], function(){
   return gulp.src('entry.js', { cwd: 'app/' })
     .pipe(webpack({
       module: {
@@ -42,7 +41,7 @@ gulp.task('build', ['environment'], function(){
     .pipe(gulp.dest(buildDir));
 });
 
-gulp.task('default', ['environment', 'clean', 'copyManifest', 'build']);
+gulp.task('default', ['environment', 'copyManifest', 'build']);
 
 gulp.task('watch', function(){
   gulp.watch('app/*', ['development:build']);
@@ -56,11 +55,39 @@ gulp.task('unit', function(){
     .pipe(mocha());
 });
 
+
+var buildDir,
+    forceClean,
+    configDir,
+    gallery,
+    environment;
+
+
 gulp.task('environment', function(){
   buildDir = process.env.BUILD_DIR || 'dist';
   forceClean = process.env.FORCE_CLEAN === 'true';
-  configDir = process.env.CONFIG_DIR || 'config';
+  environment = process.env.GALLERY_ENV || 'development';
+  gallery = process.env.GALLERY;
+  setConfigDir();
 });
+
+var setConfigDir = function() {
+  if (configDir == undefined) {
+    var base;
+
+    if (process.env.CONFIG_DIR != undefined){
+      base = process.env.CONFIG_DIR;
+    } else if (gallery == undefined) {
+      throw 'GALLERY must be specified';
+    } else {
+      base = path.join(__dirname, 'config');
+    }
+
+    console.log('Building ' + gallery + ' ' + environment);
+    configDir = path.join(base, gallery); 
+  }
+  console.log('USING ' + configDir);
+}
 
 //https://semaphoreci.com/community/tutorials/setting-up-an-end-to-end-testing-workflow-with-gulp-mocha-and-webdriverio
 gulp.task('e2e', function(done){
@@ -96,7 +123,7 @@ gulp.task('selenium', function(done){
 
 gulp.task('development:build', function(done){
   configDir = 'development';
-  runSequence('clean', ['development:copyImages', 'copyManifest'], 'build',  done);
+  runSequence('build', 'development:copyImages',  done);
 });
 
 gulp.task('development:copyImages', ['environment'], function(){
@@ -105,12 +132,18 @@ gulp.task('development:copyImages', ['environment'], function(){
 });
 
 gulp.task('copyManifest', function(){
-  return gulp.src('manifest.json', { cwd: configDir })
-    .pipe(gulp.dest('config'));
+  var sourceManifest = path.join(configDir, environment + '.json');
+  fs.access(sourceManifest, function(err){
+    if (err) {
+      throw 'Cannot find source manifest: ' + sourceManifest;
+    }
+  });
+  return gulp.src(environment + '.json', { cwd: configDir })
+    .pipe(rename('manifest.json'))
+    .pipe(gulp.dest(path.join(__dirname, 'config')));
 });
 
 gulp.task('clean', ['environment'], function(){
-  console.log('clean ' + forceClean);
   return gulp.src(buildDir + '/*')
     .pipe(clean({ force: forceClean }));
 });

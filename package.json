@@ -28,6 +28,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-clean": "^0.3.2",
     "gulp-mocha": "^2.2.0",
+    "gulp-rename": "^1.2.2",
     "gulp-webdriver": "^2.0.1",
     "html-webpack-plugin": "^2.15.0",
     "jsdom": "^8.2.0",

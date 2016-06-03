@@ -1,22 +1,17 @@
-FROM node:4.4.2
+FROM thegene/gallery-manifests
 MAINTAINER Eugene Westbrook
 
+USER root
 RUN useradd gallery
 
 # make the src dir and do npm install
-RUN mkdir /src
-COPY package.json /src
-RUN cd /src && npm install
-
-# Zombie processes
-RUN wget -O /src/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.0.1/dumb-init_1.0.1_amd64
-RUN chmod +x /src/dumb-init
+RUN mkdir /app
+COPY package.json /app
+RUN cd /app && npm install
 
 # Copy and install the app
-COPY app/ /src/app
-COPY config/ /src/config
-COPY gulpfile.js /src
-RUN chown -R gallery:gallery /src/config
+COPY app/ /app/app
+COPY gulpfile.js /app
 
 # https://github.com/rauchg/slackin/issues/136
 ENV BABEL_CACHE_PATH=/babel/babel.json
@@ -28,15 +23,12 @@ RUN mkdir /build
 RUN chown -R gallery:gallery /build
 VOLUME /build
 
-# /config volume
-RUN mkdir /config
-RUN chown -R gallery:gallery /config
-VOLUME /config
+RUN mkdir /app/config
+RUN chown gallery:gallery /app/config
 
 USER gallery
 ENV BUILD_DIR=/build
 ENV FORCE_CLEAN=true
-ENV CONFIG_DIR=/config
 
-WORKDIR /src
-CMD ["./dumb-init", "./node_modules/gulp/bin/gulp.js"]
+WORKDIR /app
+CMD ["node_modules/gulp/bin/gulp.js"]
