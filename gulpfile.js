@@ -28,6 +28,9 @@ gulp.task('build', ['environment', 'copyManifest', 'clean'], function(){
           test: /\.json$/,
           exclude: /node_modules/,
           loader: 'json'
+        }, {
+          test: /\.scss$/,
+          loaders: ["style", "css", "sass"]
         }]
       },
       output: {
