@@ -1,6 +1,8 @@
 import React from 'react';
 import ImageTile from './image_tile';
 
+import Masonry from 'react-masonry-component';
+
 var Gallery = React.createClass({
   render: function(){
     var images = this.props.manifest.map(function(image, i){
@@ -8,10 +10,13 @@ var Gallery = React.createClass({
         <ImageTile imageUrl={image.thumb} downloadUrl={image.full} key={i} /> 
       );
     });
+
     return (
-      <div className="Gallery">
+      <Masonry
+        className={'Gallery'}
+      >
         {images}
-      </div>
+      </Masonry>
     );
   }
 });

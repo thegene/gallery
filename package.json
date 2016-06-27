@@ -50,6 +50,6 @@
   "dependencies": {
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
-    "react-stonecutter": "^0.3.0"
+    "react-masonry-component": "^4.0.4"
   }
 }
