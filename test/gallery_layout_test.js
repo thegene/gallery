@@ -15,10 +15,6 @@ var getRenderedGalleryLayout = function(manifest){
 context('Given a rendered GalleryLayout', function(){
   var subject;
 
-  before(function(){
-    
-  });
-
   context('with no images in its manifest', function(){
     before(function(){
       subject = getRenderedGalleryLayout([]);
