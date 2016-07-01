@@ -1,22 +1,24 @@
 import React from 'react';
-import ImageTile from './image_tile';
-
-import Masonry from 'react-masonry-component';
+import GalleryLayout from './gallery_layout.js';
 
 var Gallery = React.createClass({
+  getInitialState: function(){
+    return { gallerySize: 1 }
+  },
+  renderManifest: function(){
+    return this.props.manifest.slice(0, this.state.gallerySize);
+  },
+  incrementGallerySize: function(){
+    this.setState({ gallerySize: this.state.gallerySize + 1 });
+  },
+  componentDidMount: function(){
+    setInterval(function(){
+      this.incrementGallerySize();
+    }.bind(this), 3000);
+  },
   render: function(){
-    var images = this.props.manifest.map(function(image, i){
-      return(
-        <ImageTile imageUrl={image.thumb} downloadUrl={image.full} key={i} /> 
-      );
-    });
-
-    return (
-      <Masonry
-        className={'Gallery'}
-      >
-        {images}
-      </Masonry>
+    return(
+      <GalleryLayout manifest={this.renderManifest()} />
     );
   }
 });
