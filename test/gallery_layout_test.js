@@ -4,10 +4,12 @@ import TestUtils from 'react-addons-test-utils';
 import GalleryLayout from '../app/gallery_layout';
 import ReactShallowRenderer from 'react-addons-test-utils';
 
+var callback = function(){};
+
 var getRenderedGalleryLayout = function(manifest){
   var renderer = ReactShallowRenderer.createRenderer();
   renderer.render(
-    <GalleryLayout manifest={manifest} />
+    <GalleryLayout manifest={manifest} imageLoaded={callback} />
   );
   return renderer.getRenderOutput();
 };
@@ -41,6 +43,10 @@ context('Given a rendered GalleryLayout', function(){
       expect(subject.props.children[0].props.downloadUrl).to.equal('blah.jpg');
       expect(subject.props.children[0].props.imageUrl).to.equal('foo.gif');
     });
+
+    it('passes the imageLoaded callback to it', function(){
+      expect(subject.props.children[0].props.onLoad).to.equal(callback);
+    });
   });
 
   context('with two images in the manifest', function(){
@@ -72,6 +78,10 @@ context('Given a rendered GalleryLayout', function(){
       it('has imageUrl from the full setting in the manifest', function(){
         expect(firstTile.props.imageUrl).to.equal('red');
       });
+
+      it('is not passed an onLoad callback', function(){
+        expect(firstTile.props.onLoad).to.equal(undefined);
+      });
     });
 
     context('the second tile', function(){
@@ -87,6 +97,10 @@ context('Given a rendered GalleryLayout', function(){
 
       it('has imageUrl from the full setting in the manifest', function(){
         expect(secondTile.props.imageUrl).to.equal('green');
+      });
+
+      it('is passed an onLoad callback', function(){
+        expect(secondTile.props.onLoad).to.equal(callback);
       });
     });
   });
