@@ -12,7 +12,7 @@ var path = require('path');
 var rename = require('gulp-rename');
 var fs = require('fs');
 
-gulp.task('build', ['environment'], function(){
+gulp.task('build', ['environment', 'copyManifest'], function(){
   return gulp.src('entry.js', { cwd: 'app/' })
     .pipe(webpack({
       module: {
@@ -44,7 +44,7 @@ gulp.task('build', ['environment'], function(){
     .pipe(gulp.dest(buildDir));
 });
 
-gulp.task('default', ['environment', 'copyManifest', 'clean', 'build']);
+gulp.task('default', ['environment', 'clean', 'build']);
 
 gulp.task('watch', function(){
   gulp.watch('app/*', ['development:build']);

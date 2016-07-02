@@ -19,24 +19,48 @@ var attributes_from = function(tag, tile){
   return attributes;
 }
 
+var findImg = function(tile){
+  return TestUtils.findRenderedDOMComponentWithTag(tile, 'img');
+}
+
+var renderTile = function(props){
+  return TestUtils.renderIntoDocument(<ImageTile {...props} />);
+}
+
 context('Given a rendered image tile with an image url and a download url', function(){
-  var firstTile;
+  var tile;
+
+  var callCount = 0;
+  var callbackTrack = function(){
+    callCount++;
+  };
 
   before(function(){
-    firstTile = TestUtils.renderIntoDocument(
-      <ImageTile imageUrl="foo.com" downloadUrl="apple" />
-    ); 
+    tile = renderTile({
+      imageUrl: "foo.com",
+      downloadUrl: "apple",
+      onLoad: callbackTrack
+    });
   });
 
   it('has an image tag with the provided url', function(){
-    expect(attributes_from('img', firstTile).src).to.equal('foo.com');
+    expect(attributes_from('img', tile).src).to.equal('foo.com');
   });
-  
+
+  context('when the img is loaded', function(){
+
+    it('calls the onLoad callback', function(){
+      TestUtils.Simulate.load(findImg(tile));
+      expect(callCount).to.equal(1);
+    });
+ 
+  });
+
   describe('the link attributes', function(){
     var attributes;
 
     before(function(){
-      attributes = attributes_from('a', firstTile);
+      attributes = attributes_from('a', tile);
     });
 
     it('has a link with a download attribute', function(){
@@ -52,38 +76,5 @@ context('Given a rendered image tile with an image url and a download url', func
     });
   });
   
-  context('given a second tile with a different image url', function(){
-    var secondTile;
-
-    before(function(){
-      secondTile = TestUtils.renderIntoDocument(
-        <ImageTile imageUrl="bar.com" downloadUrl="pear" />
-      ); 
-    });
-
-    it('has an image tag with the new url', function(){
-      expect(attributes_from('img', secondTile).src).to.equal('bar.com');
-    });
-
-    describe('the link attributes', function(){
-      var attributes;
-
-      before(function(){
-        attributes = attributes_from('a', secondTile);
-      });
-
-      it('has a link with a download attribute', function(){
-        expect(attributes.download).to.equal('true');
-      });
-
-      it('has a _blank target', function(){
-        expect(attributes.target).to.equal('_blank');
-      });
-
-      it('has a link with an href', function(){
-        expect(attributes.href).to.equal('pear');
-      });
-    });
-  });
 });
 
