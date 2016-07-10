@@ -11,14 +11,9 @@ var Gallery = React.createClass({
   incrementGallerySize: function(){
     this.setState({ gallerySize: this.state.gallerySize + 1 });
   },
-  componentDidMount: function(){
-    setInterval(function(){
-      this.incrementGallerySize();
-    }.bind(this), 3000);
-  },
   render: function(){
     return(
-      <GalleryLayout manifest={this.renderManifest()} />
+      <GalleryLayout imageLoaded={this.incrementGallerySize} manifest={this.renderManifest()} />
     );
   }
 });
