@@ -9,7 +9,7 @@ var Gallery = React.createClass({
     return this.props.manifest.slice(0, this.state.gallerySize);
   },
   incrementGallerySize: function(){
-    this.setState({ gallerySize: this.state.gallerySize + 1 });
+    this.setState({ gallerySize: this.state.gallerySize + this.props.batchSize });
   },
   render: function(){
     return(
