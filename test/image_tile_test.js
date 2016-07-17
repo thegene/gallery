@@ -27,7 +27,7 @@ var renderTile = function(props){
   return TestUtils.renderIntoDocument(<ImageTile {...props} />);
 }
 
-context('Given a rendered image tile with an image url and a download url', function(){
+context('Given a rendered image tile with thumb and full image urls', function(){
   var tile;
 
   var callCount = 0;
@@ -37,8 +37,8 @@ context('Given a rendered image tile with an image url and a download url', func
 
   before(function(){
     tile = renderTile({
-      imageUrl: "foo.com",
-      downloadUrl: "apple",
+      thumb: "foo.com",
+      full: "apple",
       onLoad: callbackTrack
     });
   });
@@ -61,10 +61,6 @@ context('Given a rendered image tile with an image url and a download url', func
 
     before(function(){
       attributes = attributes_from('a', tile);
-    });
-
-    it('has a link with a download attribute', function(){
-      expect(attributes.download).to.equal('true');
     });
 
     it('has a _blank target', function(){

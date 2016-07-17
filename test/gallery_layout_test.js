@@ -40,8 +40,8 @@ context('Given a rendered GalleryLayout', function(){
     });
 
     it('instantiates the ImageTile with the manifest settings', function(){
-      expect(subject.props.children[0].props.downloadUrl).to.equal('blah.jpg');
-      expect(subject.props.children[0].props.imageUrl).to.equal('foo.gif');
+      expect(subject.props.children[0].props.full).to.equal('blah.jpg');
+      expect(subject.props.children[0].props.thumb).to.equal('foo.gif');
     });
 
     it('passes the imageLoaded callback to it', function(){
@@ -71,12 +71,12 @@ context('Given a rendered GalleryLayout', function(){
         firstTile = subject.props.children[0];
       });
 
-      it('has downloadUrl from the full setting in the manifest', function(){
-        expect(firstTile.props.downloadUrl).to.equal('apple');
+      it('has full from the full setting in the manifest', function(){
+        expect(firstTile.props.full).to.equal('apple');
       });
 
-      it('has imageUrl from the full setting in the manifest', function(){
-        expect(firstTile.props.imageUrl).to.equal('red');
+      it('has thumb from the full setting in the manifest', function(){
+        expect(firstTile.props.thumb).to.equal('red');
       });
 
       it('is not passed an onLoad callback', function(){
@@ -91,12 +91,12 @@ context('Given a rendered GalleryLayout', function(){
         secondTile = subject.props.children[1];
       });
 
-      it('has downloadUrl from the full setting in the manifest', function(){
-        expect(secondTile.props.downloadUrl).to.equal('pear');
+      it('has full from the full setting in the manifest', function(){
+        expect(secondTile.props.full).to.equal('pear');
       });
 
-      it('has imageUrl from the full setting in the manifest', function(){
-        expect(secondTile.props.imageUrl).to.equal('green');
+      it('has thumb from the full setting in the manifest', function(){
+        expect(secondTile.props.thumb).to.equal('green');
       });
 
       it('is passed an onLoad callback', function(){

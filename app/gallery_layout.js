@@ -16,8 +16,8 @@ var GalleryLayout = React.createClass({
       return(
         <ImageTile
           key={i}
-          imageUrl={image.thumb}
-          downloadUrl={image.full}
+          thumb={image.thumb}
+          full={image.full}
           {...onLoad}
         /> 
       );
