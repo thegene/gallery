@@ -14,8 +14,8 @@ context('When visiting the gallery page', function(){
     expect(browser.getTitle()).to.equal('Gallery');
   });
 
-  it('has two image tiles', function(){
-    expect(browser.elements('.ImageTile').value.length).to.equal(2);
+  it('has a bunch of image tiles', function(){
+    expect(browser.elements('.ImageTile').value.length).to.equal(102);
   });
 
   context('when we examine the first image tile', function(){
