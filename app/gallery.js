@@ -3,7 +3,7 @@ import GalleryLayout from './gallery_layout.js';
 
 var Gallery = React.createClass({
   getInitialState: function(){
-    return { gallerySize: 1 }
+    return { gallerySize: this.props.batchSize }
   },
   renderManifest: function(){
     return this.props.manifest.slice(0, this.state.gallerySize);
