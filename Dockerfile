@@ -1,7 +1,6 @@
-FROM thegene/gallery-manifests
+FROM node:4.4.2
 MAINTAINER Eugene Westbrook
 
-USER root
 RUN useradd gallery
 
 # make the src dir and do npm install
@@ -29,6 +28,7 @@ RUN chown gallery:gallery /app/config
 USER gallery
 ENV BUILD_DIR=/build
 ENV FORCE_CLEAN=true
+ENV CONFIG_DIR=/config
 
 WORKDIR /app
 CMD ["node_modules/gulp/bin/gulp.js"]
