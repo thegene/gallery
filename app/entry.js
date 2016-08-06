@@ -6,6 +6,6 @@ import manifest from '../config/manifest.json';
 import './stylesheet.scss';
 
 ReactDOM.render(
-  <Gallery manifest={manifest.manifest} batchSize={1} />,
+  <Gallery manifest={manifest.manifest} batchSize={10} />,
   document.getElementById('content')
 );
